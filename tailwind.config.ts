@@ -55,10 +55,25 @@ export default {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0' },
         },
+        'sweep-rotate': {
+          '0%': { '--sweep-angle': '0deg' },
+          '100%': { '--sweep-angle': '360deg' },
+        },
+        'dash-flow': {
+          '0%': { 'stroke-dashoffset': '24' },
+          '100%': { 'stroke-dashoffset': '0' },
+        },
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
       },
       animation: {
         'pulse-slow': 'pulse 2.2s cubic-bezier(0.4,0,0.6,1) infinite',
         'caret-blink': 'caret-blink 1s step-end infinite',
+        'sweep-rotate': 'sweep-rotate 2.4s linear infinite',
+        'dash-flow': 'dash-flow 1.2s linear infinite',
+        'fade-in': 'fade-in 0.8s ease-out',
       },
     },
   },

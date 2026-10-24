@@ -1,6 +1,7 @@
 import { resumeData } from '../../data/resume'
 import { SectionHeading } from '../ui/SectionHeading'
 import { Panel } from '../ui/Panel'
+import { Reveal, RevealItem } from '../ui/Reveal'
 
 export function About() {
   return (
@@ -8,10 +9,12 @@ export function About() {
       <div className="mx-auto max-w-content">
         <SectionHeading id="about-heading" stageNumber="01 / Build" title="About" />
 
-        <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-          <p className="max-w-prose text-text-muted">{resumeData.profile.paragraph}</p>
+        <Reveal className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+          <RevealItem>
+            <p className="max-w-prose text-text-muted">{resumeData.profile.paragraph}</p>
+          </RevealItem>
 
-          <div className="space-y-4">
+          <RevealItem className="space-y-4">
             <Panel>
               <h3 className="font-mono text-xs uppercase tracking-wide text-text-muted">Education</h3>
               <ul className="mt-3 space-y-3">
@@ -37,8 +40,8 @@ export function About() {
                 ))}
               </ul>
             </Panel>
-          </div>
-        </div>
+          </RevealItem>
+        </Reveal>
       </div>
     </section>
   )

@@ -1,4 +1,5 @@
 import type { ProjectEntry } from '../../data/resume'
+import { useTiltGlow } from '../../lib/useTiltGlow'
 import { Badge } from '../ui/Badge'
 
 interface ProjectCardProps {
@@ -6,8 +7,15 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
+  const { ref, onPointerMove, onPointerLeave } = useTiltGlow<HTMLElement>()
+
   return (
-    <article className="overflow-hidden rounded border border-border bg-panel transition-colors duration-200 hover:border-border-strong">
+    <article
+      ref={ref}
+      onPointerMove={onPointerMove}
+      onPointerLeave={onPointerLeave}
+      className="card-sweep card-tilt card-glow overflow-hidden rounded border border-border bg-panel transition-colors duration-200 hover:border-border-strong"
+    >
       <div className="border-b border-border px-4 py-2.5">
         <p className="truncate font-mono text-xs text-text-muted">{project.filePath}</p>
       </div>

@@ -33,7 +33,7 @@ export function PipelineRail() {
                 aria-current={status === 'running' ? 'step' : undefined}
                 className="group flex items-center gap-3"
               >
-                <StatusDot status={status} />
+                <StatusDot status={status} className="transition-transform duration-200 group-hover:scale-125" />
                 <span
                   className={`font-mono text-xs transition-colors duration-200 ${
                     status === 'running' ? 'text-accent' : 'text-text-muted group-hover:text-text'
@@ -59,8 +59,9 @@ export function PipelineRail() {
                   onClick={() => scrollToSection(stage.sectionIds[0])}
                   aria-current={status === 'running' ? 'step' : undefined}
                   aria-label={stage.label}
+                  className="group"
                 >
-                  <StatusDot status={status} size="sm" />
+                  <StatusDot status={status} size="sm" className="transition-transform duration-200 group-hover:scale-125" />
                 </button>
               </li>
             )

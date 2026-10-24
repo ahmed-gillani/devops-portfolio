@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo } from 'react'
+import { useActiveSection } from './useActiveSection'
 
 export type StageStatus = 'pending' | 'running' | 'success'
 
@@ -14,42 +15,13 @@ interface PipelineStages {
 }
 
 export function usePipelineStages(stages: PipelineStageConfig[]): PipelineStages {
-  const [visibleSectionId, setVisibleSectionId] = useState<string | null>(null)
-  const ratios = useRef(new Map<string, number>())
   const sectionIdsKey = stages.map((stage) => stage.sectionIds.join(',')).join('|')
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          ratios.current.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0)
-        })
-
-        let bestId: string | null = null
-        let bestRatio = 0
-        ratios.current.forEach((ratio, id) => {
-          if (ratio > bestRatio) {
-            bestRatio = ratio
-            bestId = id
-          }
-        })
-
-        if (bestId) {
-          setVisibleSectionId(bestId)
-        }
-      },
-      { threshold: [0, 0.15, 0.3, 0.5, 0.75, 1], rootMargin: '-15% 0px -55% 0px' },
-    )
-
-    const ids = stages.flatMap((stage) => stage.sectionIds)
-    ids.forEach((id) => {
-      const el = document.getElementById(id)
-      if (el) observer.observe(el)
-    })
-
-    return () => observer.disconnect()
+  const allSectionIds = useMemo(
+    () => stages.flatMap((stage) => stage.sectionIds),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sectionIdsKey])
+    [sectionIdsKey],
+  )
+  const visibleSectionId = useActiveSection(allSectionIds)
 
   const activeIndex = stages.findIndex((stage) => stage.sectionIds.includes(visibleSectionId ?? ''))
 

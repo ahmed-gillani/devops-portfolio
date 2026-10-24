@@ -1,5 +1,6 @@
 import { resumeData } from '../../data/resume'
 import { SectionHeading } from '../ui/SectionHeading'
+import { Reveal, RevealItem } from '../ui/Reveal'
 import { ProjectCard } from './ProjectCard'
 
 export function Projects() {
@@ -13,11 +14,13 @@ export function Projects() {
           description="Academic and personal engineering projects shipped outside of coursework."
         />
 
-        <div className="grid gap-5 sm:grid-cols-2">
+        <Reveal className="grid gap-5 sm:grid-cols-2">
           {resumeData.projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+            <RevealItem key={project.id}>
+              <ProjectCard project={project} />
+            </RevealItem>
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   )

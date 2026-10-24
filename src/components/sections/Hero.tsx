@@ -5,19 +5,13 @@ import { resumeData } from '../../data/resume'
 import { bootSequence } from '../../animations/heroSequence'
 import { useTypewriter } from '../../lib/useTypewriter'
 import { scrollToSection } from '../../lib/scrollTo'
+import { highlightKeywords } from '../../lib/highlightKeywords'
+import { fadeUpItem, staggerContainer } from '../../animations/variants'
 import { TerminalWindow } from '../ui/TerminalWindow'
+import { HeroBackground } from './HeroBackground'
 
 const REVEAL_DELAY_MS = 450
-
-const containerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 8 },
-  visible: { opacity: 1, y: 0 },
-}
+const HEADLINE_KEYWORDS = ['CI/CD', 'DevOps']
 
 export function Hero() {
   const prefersReducedMotion = useReducedMotion()
@@ -50,7 +44,11 @@ export function Hero() {
   }, [typedDone, lineIndex, prefersReducedMotion])
 
   return (
-    <section id="top" className="px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-16 lg:px-8">
+    <section
+      id="top"
+      className="relative isolate overflow-hidden px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-16 lg:px-8"
+    >
+      <HeroBackground className="absolute inset-0 -z-10" />
       <div className="mx-auto grid max-w-content gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <div>
           <TerminalWindow title="hamza@devops:~" minHeightClassName="min-h-[220px] sm:min-h-[260px]">
@@ -87,24 +85,27 @@ export function Hero() {
         <motion.div
           initial="hidden"
           animate={bootDone ? 'visible' : 'hidden'}
-          variants={containerVariants}
+          variants={staggerContainer()}
           className="min-h-[1px]"
         >
-          <motion.h1 variants={itemVariants} className="text-3xl font-semibold text-text sm:text-4xl lg:text-5xl">
+          <motion.h1
+            variants={fadeUpItem}
+            className="text-gradient-accent text-3xl font-semibold sm:text-4xl lg:text-5xl"
+          >
             {resumeData.contact.name}
           </motion.h1>
-          <motion.p variants={itemVariants} className="mt-2 font-mono text-sm text-accent sm:text-base">
+          <motion.p variants={fadeUpItem} className="mt-2 font-mono text-sm text-accent sm:text-base">
             {resumeData.contact.title}
           </motion.p>
-          <motion.p variants={itemVariants} className="mt-5 max-w-prose text-text-muted">
-            {resumeData.profile.headline}
+          <motion.p variants={fadeUpItem} className="mt-5 max-w-prose text-text-muted">
+            {highlightKeywords(resumeData.profile.headline, HEADLINE_KEYWORDS)}
           </motion.p>
 
-          <motion.div variants={itemVariants} className="mt-8 flex flex-wrap items-center gap-4">
+          <motion.div variants={fadeUpItem} className="mt-8 flex flex-wrap items-center gap-4">
             <a
               href={resumeData.resumeFileUrl}
               download
-              className="flex items-center gap-2 rounded bg-accent px-4 py-2.5 text-sm font-medium text-ink transition-colors duration-200 hover:bg-accent-hover"
+              className="flex items-center gap-2 rounded bg-accent px-4 py-2.5 text-sm font-medium text-ink transition-[color,background-color,box-shadow,transform] duration-200 hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/20 active:scale-[0.97]"
             >
               <Download size={16} aria-hidden="true" />
               Download resume
@@ -115,7 +116,7 @@ export function Hero() {
                 event.preventDefault()
                 scrollToSection('contact')
               }}
-              className="flex items-center gap-2 rounded border border-border-strong px-4 py-2.5 text-sm text-text transition-colors duration-200 hover:border-accent hover:text-accent"
+              className="flex items-center gap-2 rounded border border-border-strong px-4 py-2.5 text-sm text-text transition-[color,border-color,box-shadow,transform] duration-200 hover:border-accent hover:text-accent hover:shadow-sm active:scale-[0.97]"
             >
               <Mail size={16} aria-hidden="true" />
               Contact
